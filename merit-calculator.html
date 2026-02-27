@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kokurikulum Merit Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+        
+        h3 {
+            color: #667eea;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .weight {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            display: none;
+        }
+        
+        #result.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .breakdown {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kokurikulum Merit Calculator</h1>
+        
+        <form id="meritForm">
+            <!-- Kehadiran (30%) -->
+            <h3>Kehadiran (30%)</h3>
+            <div class="form-group">
+                <input type="number" id="kehadiran" min="0" max="30" placeholder="Masukkan nilai kehadiran (0-30)" required>
+                <div class="weight">Maksimum: 30 markah</div>
+            </div>
+            
+            <!-- Penglibatan (20%) -->
+            <h3>Penglibatan (20%)</h3>
+            <div class="form-group">
+                <select id="penglibatan" required>
+                    <option value="">-- Pilih Tahap Penglibatan --</option>
+                    <option value="17">Antara Matrikulasi/Zon/Kebangsaan</option>
+                    <option value="14">Peringkat Kolej/Negeri</option>
+                    <option value="11">Antara Praktikum</option>
+                    <option value="8">Tutoran/Praktikum/Kolej Kediaman</option>
+                </select>
+            </div>
+            
+            <!-- Pencapaian (20%) -->
+            <h3>Pencapaian (20%)</h3>
+            <div class="form-group">
+                <select id="pencapaian" required>
+                    <option value="">-- Pilih Pencapaian --</option>
+                    <option value="20">Johan (Antara Matrikulasi/Zon/Kebangsaan)</option>
+                    <option value="19">Naib Johan (Antara Matrikulasi/Zon/Kebangsaan)</option>
+                    <option value="18">Ketiga (Antara Matrikulasi/Zon/Kebangsaan)</option>
+                    <option value="17">Johan (Peringkat Kolej/Negeri)</option>
+                    <option value="16">Naib Johan (Peringkat Kolej/Negeri)</option>
+                    <option value="15">Ketiga (Peringkat Kolej/Negeri)</option>
+                    <option value="14">Johan (Antara Praktikum)</option>
+                    <option value="13">Naib Johan (Antara Praktikum)</option>
+                    <option value="12">Ketiga (Antara Praktikum)</option>
+                    <option value="11">Johan (Tutoran/Praktikum/Kolej Kediaman)</option>
+                    <option value="10">Naib Johan (Tutoran/Praktikum/Kolej Kediaman)</option>
+                    <option value="9">Ketiga (Tutoran/Praktikum/Kolej Kediaman)</option>
+                </select>
+            </div>
+            
+            <!-- Jawatan (10%) -->
+            <h3>Jawatan (10%)</h3>
+            <div class="form-group">
+                <select id="jawatan" required>
+                    <option value="">-- Pilih Jawatan --</option>
+                    <option value="10">YDP/NYDP/Setiausaha Agong JPP/Bendahari JPP/Exco JPP / Imam</option>
+                    <option value="9">Pengerusi/Ketua Pasukan/Ketua dalam pelbagai aktiviti peringkat kolej</option>
+                    <option value="8">Timbalan Pengerusi/Setiausaha/Bendahari dalam pelbagai aktiviti peringkat kolej</option>
+                    <option value="7">Ketua Biro-Biro JPP/Ahli Jawatankuasa dalam pelbagai aktiviti peringkat kolej</option>
+                    <option value="6">Ahli Jawatankuasa pelbagai program anjuran kolej</option>
+                    <option value="5">Ahli Biasa/Peserta program anjuran kolej</option>
+                </select>
+            </div>
+            
+            <!-- Bonus (10%) -->
+            <h3>Bonus (10%)</h3>
+            <div class="form-group">
+                <select id="bonus" required>
+                    <option value="">-- Pilih Bonus --</option>
+                    <option value="10">Anugerah Kecemerlangan Kokurikulum/YDP JPP/Mewakili 2+ pertandingan kebangsaan/antarabangsa</option>
+                    <option value="9">1+ pertandingan kebangsaan/antarabangsa atau 3+ aktiviti kolej/jabatan</option>
+                    <option value="8">2+ aktiviti kolej/jabatan</option>
+                    <option value="7">1+ aktiviti kolej/jabatan</option>
+                </select>
+            </div>
+            
+            <button type="button" onclick="kira()">Calculate Merit</button>
+        </form>
+        
+        <div id="result">
+            <div id="resultText"></div>
+            <div class="breakdown" id="breakdown"></div>
+        </div>
+    </div>
+    
+    <script>
+        function kira() {
+            // Get values
+            const kehadiran = Number(document.getElementById('kehadiran').value) || 0;
+            const penglibatan = Number(document.getElementById('penglibatan').value) || 0;
+            const pencapaian = Number(document.getElementById('pencapaian').value) || 0;
+            const jawatan = Number(document.getElementById('jawatan').value) || 0;
+            const bonus = Number(document.getElementById('bonus').value) || 0;
+            
+            // Validate inputs
+            if (kehadiran === 0 || penglibatan === 0 || pencapaian === 0 || jawatan === 0 || bonus === 0) {
+                alert('Sila lengkapkan semua medan');
+                return;
+            }
+            
+            // Calculate total (max 100)
+            const total = kehadiran + penglibatan + pencapaian + jawatan + bonus;
+            
+            // Calculate percentage
+            const percent = (total / 100) * 100;
+            
+            // Display result
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            const breakdown = document.getElementById('breakdown');
+            
+            resultText.innerHTML = `<strong>Markah Kokurikulum Anda: ${percent.toFixed(2)}/100</strong>`;
+            
+            breakdown.innerHTML = `
+                <strong>Pecahan Markah:</strong><br>
+                Kehadiran: ${kehadiran}/30<br>
+                Penglibatan: ${penglibatan}/17<br>
+                Pencapaian: ${pencapaian}/20<br>
+                Jawatan: ${jawatan}/10<br>
+                Bonus: ${bonus}/10<br>
+                <strong>Jumlah: ${total}/100</strong>
+            `;
+            
+            resultDiv.classList.add('show');
+        }
+        
+        // Allow Enter key to calculate
+        document.getElementById('meritForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                kira();
+            }
+        });
+    </script>
+</body>
+</html>
